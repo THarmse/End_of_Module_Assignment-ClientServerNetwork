@@ -23,7 +23,7 @@ def handle_received_data(data, is_encrypted, is_file, file_path):
     is_file: Whether the data is a file or not.
     file_path: The path to the file if the data is a file.
     """
-    display_message = None
+    display_message = ""
 
     if is_file:
         # Handle file data
@@ -32,15 +32,16 @@ def handle_received_data(data, is_encrypted, is_file, file_path):
             f.write(base64_decoded_data)
 
         absolute_file_path = os.path.abspath(file_path)
-        display_message = f"File is saved at: {absolute_file_path}"
 
         if is_encrypted:
             decrypted_data = decryption.decrypt_data(base64_decoded_data).decode('utf-8')
-            display_message += f", Content (Decrypted for viewing): {decrypted_data}"
+            display_message += f"File Content (Decrypted for viewing): {decrypted_data}"
         else:
             # If the data is not encrypted, read it directly from the file
             with open(file_path, "r") as f:
-                display_message += f", Content: {f.read()}"
+                display_message += f"File Content: {f.read()}"
+
+        display_message += f" - The Text File is saved at: {absolute_file_path}"
 
     else:
         # Handle non-file data
