@@ -1,90 +1,103 @@
-import base64
+from flask import Flask, render_template, jsonify
+from socket import socket, AF_INET, SOCK_STREAM
+from threading import Thread
 import json
 import os
-from socket import socket, AF_INET, SOCK_STREAM
+import base64
 from common import decryption
 from common.load_config import load_config
 
+app = Flask(__name__)
 
+# Store received messages
+received_messages = []
+
+
+def handle_received_data(data, is_encrypted, is_file, file_path):
+    """
+    Function to handle the received data for both console output and Flask display.
+
+    Parameters:
+    data: The received data.
+    is_encrypted: Whether the data is encrypted or not.
+    is_file: Whether the data is a file or not.
+    file_path: The path to the file if the data is a file.
+    """
+    display_message = None
+
+    if is_file:
+        # Handle file data
+        base64_decoded_data = base64.b64decode(data)
+        with open(file_path, "wb") as f:
+            f.write(base64_decoded_data)
+
+        absolute_file_path = os.path.abspath(file_path)
+        display_message = f"File is saved at: {absolute_file_path}"
+
+        if is_encrypted:
+            decrypted_data = decryption.decrypt_data(base64_decoded_data).decode('utf-8')
+            display_message += f", Content (Decrypted for viewing): {decrypted_data}"
+        else:
+            # If the data is not encrypted, read it directly from the file
+            with open(file_path, "r") as f:
+                display_message += f", Content: {f.read()}"
+
+    else:
+        # Handle non-file data
+        if is_encrypted:
+            decrypted_data = decryption.decrypt_data(data.encode()).decode('utf-8')
+            display_message = f"Received data (Decrypted for viewing): {decrypted_data}"
+        else:
+            display_message = f"Received data: {data}"
+
+    # Print to console
+    print(display_message)
+
+    # Add to Flask display
+    received_messages.append(display_message)
+
+
+# Existing server_main code with minor changes
 def server_main():
-    """
-    The main function to handle incoming client connections and process
-    received data according to server configurations.
-    """
-
-    # Load server configurations from a YAML file
     config = load_config('server_config.yaml', caller='server')
-
-    # Create a socket object (IPv4 and TCP)
     server_socket = socket(AF_INET, SOCK_STREAM)
-
-    # Retrieve host and port from the configuration
     host = config['host']
     port = config['port']
-
-    # Bind the socket to the specified host and port
     server_socket.bind((host, port))
-
-    # Set the server to listen for incoming connections
     server_socket.listen(5)
 
     while True:
-        # Accept incoming connection
         client_socket, addr = server_socket.accept()
         print(f"Got a connection from {addr}")
 
-        # Receive data from the client
         received_data = client_socket.recv(4096).decode('utf-8')
-
-        # Deserialize the JSON string into a Python dictionary
         parsed_data = json.loads(received_data)
-
-        # Extract relevant data fields
         incoming_data = parsed_data['data']
         is_encrypted = parsed_data['isEncrypted']
         is_file = parsed_data['isFile']
 
-        # Create the 'server/text_files' directory if it doesn't exist
         if not os.path.exists("server/text_files"):
             os.makedirs("server/text_files")
 
-        # Define the file path for saving received files inside the 'server/text_files' directory
         file_path = "server/text_files/received_file.txt"
 
-        # Process received data based on whether it's a file or a simple message
-        if is_file:
-            # Decode the base64 encoded data
-            base64_decoded_data = base64.b64decode(incoming_data)
+        handle_received_data(incoming_data, is_encrypted, is_file, file_path)
 
-            # Write the decoded data to a file
-            with open(file_path, "wb") as f:
-                f.write(base64_decoded_data)
-
-            # Output the absolute file path
-            absolute_file_path = os.path.abspath(file_path)
-            print(f"File is saved at: {absolute_file_path}")
-
-            # Decrypt the file content for display if it's encrypted
-            if is_encrypted:
-                decrypted_data = decryption.decrypt_data(base64_decoded_data).decode('utf-8')
-                print(f"File Content (Decrypted for viewing): {decrypted_data}, Encrypted: {is_encrypted}, Is File: {is_file}")
-
-            else:
-                with open(file_path, "r") as f:
-                    print(f"File Content: {f.read()}, Encrypted: {is_encrypted}, Is File: {is_file}")
-
-        else:
-            # Decrypt the message for display if it's encrypted
-            if is_encrypted:
-                decrypted_data = decryption.decrypt_data(incoming_data.encode()).decode('utf-8')
-                print(f"Received data (Decrypted for viewing): {decrypted_data}, Encrypted: {is_encrypted}, Is File: {is_file}")
-
-            else:
-                print(f"Received data: {incoming_data}, Encrypted: {is_encrypted}, Is File: {is_file}")
-
-        # Close the client socket connection
         client_socket.close()
 
 
+@app.route('/')
+def index():
+    return render_template('index.html', messages=received_messages)
+
+@app.route('/get_messages')
+def get_messages():
+    return jsonify(received_messages=received_messages)
+def run_flask_app():
+    app.run(port=5001)
+
+
 if __name__ == "__main__":
+    flask_thread = Thread(target=run_flask_app)
+    flask_thread.start()
     server_main()

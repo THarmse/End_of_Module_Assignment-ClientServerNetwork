@@ -2,9 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Server Messages</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
+
+<h1>Received Messages</h1>
+<div id="messages">
+    <!-- Messages will be populated here -->
+</div>
+
+<script>
+    function updateMessages() {
+        $.getJSON("/get_messages", function(data) {
+            var received_messages = data.received_messages;
+            var html = "";
+            for (var i = 0; i < received_messages.length; i++) {
+                html += "<p>" + received_messages[i] + "</p>";
+            }
+            $("#messages").html(html);
+        });
+    }
+
+    // Update messages every 2 seconds
+    setInterval(updateMessages, 2000);
+</script>
 
 </body>
 </html>
