@@ -31,20 +31,16 @@ class DataDeserializer:
 def Print_Screen(user_input_for_print):
     if user_input_for_print == "y":
         return True
-    elif user_input == "n":
+    elif user_input_for_print == "n":
         return False
-    else:
-        print("Error. Please try again.")
-        return Print_Screen()
+
 
 def Save_to_log(user_input_for_save):
     if user_input_for_save == "y":
         return True
-    elif user_input == "n":
+    elif user_input_for_save == "n":
         return False
-    else:
-        print("Error. Please try again.")
-        return Print_Screen()
+
 
 def Write_to_log(DATA):
     with open ("server/server_log.txt",'a') as file:
