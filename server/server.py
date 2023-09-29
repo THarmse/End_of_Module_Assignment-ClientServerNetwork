@@ -27,19 +27,6 @@ class DataDeserializer:
         for child in root:
             data_dict[child.tag] = child.text
         return data_dict
-    
-def Print_Screen(user_input_for_print):
-    if user_input_for_print == "y":
-        return True
-    elif user_input_for_print == "n":
-        return False
-
-
-def Save_to_log(user_input_for_save):
-    if user_input_for_save == "y":
-        return True
-    elif user_input_for_save == "n":
-        return False
 
 
 def Write_to_log(DATA):
@@ -68,9 +55,20 @@ while True:
     deserilaizer = DataDeserializer (RECIEVED_DATA)
 
     while True:
-        user_input1 = input("Print the received data on screen? (Y/N)").lower()
-        user_input2 = input("Save the received data to log? (Y/N)").lower()
-        
+        while True:
+            user_input1 = input("Print the received data on screen? (Y/N)").lower()
+            user_input2 = input("Save the received data to log? (Y/N)").lower()
+            if user_input1 == "y" and user_input2 == "y":
+                Print_Screen = True
+                Save_to_log = True
+                break
+            elif user_input1 =="n" and user_input2 == "n":
+                Print_Screen = False
+                Save_to_log = False
+                break
+            else:
+                print("Error. Please try again")
+
         if FORMAT == "b":
             deserilazed_data = deserilaizer.deserialize_binary()
         elif FORMAT == "j":
@@ -82,9 +80,9 @@ while True:
             conn.close()
             break
 
-        if Print_Screen(user_input1):
+        if Print_Screen:
             print(deserilazed_data)
-        if Save_to_log(user_input2):
+        if Save_to_log:
             Write_to_log(deserilazed_data)
 
         break  #exit the loop after processing one set of data
