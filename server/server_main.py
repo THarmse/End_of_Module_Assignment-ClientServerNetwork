@@ -1,63 +1,56 @@
-import os
-from common.common_utils import load_config
+import json
 from socket import socket, AF_INET, SOCK_STREAM
-
-
-def read_key_from_file(filename):
-    """
-    Read the encryption key from a file.
-
-    Parameters:
-        filename (str): The full path to the key file.
-
-    Returns:
-        bytes: The encryption key.
-    """
-    with open(filename, 'rb') as file:
-        key = file.read()
-    return key
+from common import decryption
+from common.load_config import load_config
 
 
 def server_main():
-    # Get the current directory
-    current_dir = os.path.dirname(os.path.abspath(__file__))
+    """
+    The main function for the server to handle incoming connections
+    and decrypt data as needed.
+    """
 
-    # Navigate up to the root directory
-    root_dir = os.path.dirname(current_dir)
-
-    # Load server configuration
+    # Load server configuration from YAML file
     config = load_config('server_config.yaml', caller='server')
 
-    # Prepare for decryption by reading the key
-    key_file_path = os.path.join(root_dir, 'utils', 'key.key')
-    decryption_key = read_key_from_file(key_file_path)
-
-    # Create a socket object
+    # Create a socket object with IPv4 and TCP/IP protocols
     server_socket = socket(AF_INET, SOCK_STREAM)
 
-    # Get server details from config
+    # Retrieve host and port details from config
     host = config['host']
     port = config['port']
 
-    # Bind to the port
+    # Bind the socket to the given host and port
     server_socket.bind((host, port))
 
-    # Queue up to 5 requests
+    # Enable the server to accept connections (up to 5 clients in the waiting queue)
     server_socket.listen(5)
 
     while True:
-        # Establish a connection with the client.
+        # Accept a connection from a client
         client_socket, addr = server_socket.accept()
-
         print(f"Got a connection from {addr}")
 
-        encrypted_data = client_socket.recv(1024)
+        # Receive data from the client (up to 4096 bytes)
+        received_data = client_socket.recv(4096).decode('utf-8')
 
-        # Testing - encryption to still be done
-        decrypted_data = encrypted_data
+        # Parse the received JSON string into a Python dictionary
+        parsed_data = json.loads(received_data)
 
-        print(f"Received data: {decrypted_data}")
+        # Extract important fields from the received data
+        encrypted_data = parsed_data['data']
+        is_encrypted = parsed_data['isEncrypted']
+        is_file = parsed_data['isFile']
 
+        # If the data is encrypted, decrypt it
+        if is_encrypted:
+            decrypted_data = decryption.decrypt_data(encrypted_data.encode()).decode('utf-8')
+        else:
+            decrypted_data = encrypted_data
+
+        print(f"Received data: {decrypted_data}, Encrypted: {is_encrypted}, Is File: {is_file}")
+
+        # Close the client socket
         client_socket.close()
 
 

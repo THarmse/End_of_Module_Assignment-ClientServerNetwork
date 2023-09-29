@@ -2,6 +2,7 @@
 
 from cryptography.fernet import Fernet
 
+
 def generate_key_to_file(filename="key.key"):
     """
     Generates an encryption key and saves it to a file. This is to be used by client and server.
@@ -14,6 +15,7 @@ def generate_key_to_file(filename="key.key"):
     # Save the encryption key to a file
     with open(filename, "wb") as key_file:
         key_file.write(key)
+
 
 if __name__ == "__main__":
     generate_key_to_file()

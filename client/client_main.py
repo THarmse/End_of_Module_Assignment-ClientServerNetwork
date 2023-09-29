@@ -1,5 +1,5 @@
 import os
-from common.common_utils import load_config
+from common.load_config import load_config
 from socket import socket, AF_INET, SOCK_STREAM
 
 from common.encryption import encrypt_data
