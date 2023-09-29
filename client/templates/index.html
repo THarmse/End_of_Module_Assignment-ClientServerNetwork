@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Web Client</title>
+    <!-- Styling for the form elements and body -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        button {
+            display: inline-block;
+            margin-top: 20px;
+        }
+    </style>
+    <!-- Importing main.js for client-side logic -->
+    <script src="/static/main.js"></script>
+</head>
+<body>
+
+<!-- Heading for the form for University of Liverpool Project -->
+<h1>University of Liverpool - Dictionary Data</h1>
+
+<!-- Form group for Key-Value pairs -->
+<div class="form-group">
+    Key: <input type="text" id="key">
+    Value: <input type="text" id="value">
+    <button onclick="addData()">Add</button> <!-- Button to add key-value pair -->
+</div>
+
+<!-- Display area for current data -->
+<h3>Current Dictionary Data:</h3>
+<pre id="currentData"></pre>
+
+<!-- Display area for serialized output -->
+<h3>Serialized Dictionary Output:</h3>
+<pre id="serializedOutput"></pre>
+
+<!-- Form group for selecting serialization format -->
+<div class="form-group">
+    <label for="format">Serialization Format:</label>
+    <select id="format">
+        <option value="JSON">JSON</option>
+        <option value="Binary">Binary</option>
+        <option value="XML">XML</option>
+    </select>
+</div>
+
+<!-- Form group for enabling encryption -->
+<div class="form-group">
+    <input type="checkbox" id="encrypt">
+    <label for="encrypt">Encrypt</label>
+</div>
+
+<!-- Form group for submitting data as text file -->
+<div class="form-group">
+    <input type="checkbox" id="asTextFile">
+    <label for="asTextFile">Submit as text file?</label>
+</div>
+
+<!-- Button to submit the data -->
+<button onclick="submitData()">Submit</button>
+
+</body>
+</html>
