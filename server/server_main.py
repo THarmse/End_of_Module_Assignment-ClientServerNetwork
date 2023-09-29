@@ -90,9 +90,19 @@ def server_main():
 def index():
     return render_template('index.html', messages=received_messages)
 
+
 @app.route('/get_messages')
 def get_messages():
     return jsonify(received_messages=received_messages)
+
+
+@app.route('/clear_messages', methods=['POST'])
+def clear_messages():
+    global received_messages
+    received_messages.clear()
+    return 'Messages cleared', 200
+
+
 def run_flask_app():
     app.run(port=5001)
 

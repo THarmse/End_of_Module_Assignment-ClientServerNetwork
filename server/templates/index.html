@@ -3,30 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <title>Server Messages</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
+    <h1>Received Messages</h1>
+    <div id="messages">
+        <!-- Your messages will be displayed here -->
+    </div>
+    <button id="clearButton">Clear Messages</button>
 
-<h1>Received Messages</h1>
-<div id="messages">
-    <!-- Messages will be populated here -->
-</div>
+    <script>
+        // Fetch messages from the server and update the page
+        function updateMessages() {
+            fetch('/get_messages')
+            .then(response => response.json())
+            .then(data => {
+                let messageDiv = document.getElementById("messages");
+                messageDiv.innerHTML = '';
+                data.received_messages.forEach(message => {
+                    messageDiv.innerHTML += `<p>${message}</p>`;
+                });
+            });
+        }
 
-<script>
-    function updateMessages() {
-        $.getJSON("/get_messages", function(data) {
-            var received_messages = data.received_messages;
-            var html = "";
-            for (var i = 0; i < received_messages.length; i++) {
-                html += "<p>" + received_messages[i] + "</p>";
-            }
-            $("#messages").html(html);
+        // Clear messages on server and update the page
+        document.getElementById("clearButton").addEventListener("click", function() {
+            fetch('/clear_messages', {
+                method: 'POST',
+            }).then(() => {
+                document.getElementById("messages").innerHTML = '';
+            });
         });
-    }
 
-    // Update messages every 2 seconds
-    setInterval(updateMessages, 2000);
-</script>
-
+        // Update messages every 2 seconds
+        setInterval(updateMessages, 2000);
+    </script>
 </body>
 </html>
