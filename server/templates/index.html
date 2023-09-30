@@ -17,9 +17,15 @@
     <div id="container">
         <div id="buttonContainer">
             <button id="clearButton">Clear Messages</button>
+            <!-- Download button if config is for File -->
+            <button id="downloadButton" style="display:none;">Download File</button>
+        </div>
+        <div id="filePath" style="display:none;">
+            <!-- File path will be displayed here when config is 'file' -->
+            <p>File path: <span id="filePathText"></span></p>
         </div>
         <div id="messages">
-            <!-- Client Messages received, will be displayed here -->
+            <!-- Client Messages received will be displayed here -->
         </div>
     </div>
 
@@ -37,6 +43,17 @@
             .then(data => {
                 let messageDiv = document.getElementById("messages");
                 messageDiv.innerHTML = '';
+
+                // Handle 'file_or_print_display' config from server
+                if (data.file_or_print === 'file') {
+                    document.getElementById("downloadButton").style.display = 'block';
+                    document.getElementById("filePath").style.display = 'block';
+                    document.getElementById("filePathText").innerText = data.file_path; // Assuming server returns a 'file_path' attribute
+                } else {
+                    document.getElementById("downloadButton").style.display = 'none';
+                    document.getElementById("filePath").style.display = 'none';
+                }
+
                 data.received_messages.forEach(message => {
                     let escapedMessage = escapeHtml(message);
                     messageDiv.innerHTML += `<pre>${escapedMessage}</pre>`;
@@ -51,6 +68,11 @@
             }).then(() => {
                 document.getElementById("messages").innerHTML = '';
             });
+        });
+
+        // Download file
+        document.getElementById("downloadButton").addEventListener("click", function() {
+            window.location.href = '/download_file';
         });
 
         // Update messages every 2 seconds
