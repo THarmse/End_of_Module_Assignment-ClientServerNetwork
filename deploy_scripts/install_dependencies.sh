@@ -3,13 +3,13 @@
 # Debugging: Print the current directory.
 echo "Current directory is $(pwd)"
 
-# Check and navigate to /opt/liverpool if it exists
-if [ -d "/opt/liverpool" ]; then
-  cd /opt/liverpool || { echo "Error changing directory to /opt/liverpool"; exit 1; }
-else
-  echo "/opt/liverpool does not exist."
-  exit 1
+# Create and navigate to /opt/liverpool if it doesn't exist
+if [ ! -d "/opt/liverpool" ]; then
+  echo "/opt/liverpool does not exist. Creating..."
+  sudo mkdir -p /opt/liverpool
 fi
+
+cd /opt/liverpool || { echo "Error changing directory to /opt/liverpool"; exit 1; }
 
 # Check if pip3 is installed; if not, install it.
 if ! command -v pip3 &> /dev/null; then
