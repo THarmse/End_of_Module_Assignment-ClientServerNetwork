@@ -16,6 +16,10 @@ permissions:
     mode: 755
     owner: root
     group: root
+  - object: requirements.txt  
+    mode: 644
+    owner: root
+    group: root
 hooks:
   ApplicationStop:
     - location: deploy_scripts/stop_client.sh
