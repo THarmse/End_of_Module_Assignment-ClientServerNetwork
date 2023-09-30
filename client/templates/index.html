@@ -3,18 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <title>Web Client</title>
-    <!-- Styling for the form elements and body -->
+    <!-- Enhanced styling for the form elements and body -->
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            background-color: #ffffff;
         }
         .form-group {
             margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;  /* Light gray background */
         }
         button {
-            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
             margin-top: 20px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        input[type="text"] {
+            padding: 8px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        select {
+            padding: 8px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        label {
+            font-weight: bold;
+        }
+        h1 {
+            color: #333;
+        }
+        h3 {
+            margin-top: 20px;
+            color: #333;
+        }
+        .logo {  /* Style to resize the logo */
+            width: 300px;  /* Set width */
+            height: auto;  /* Height auto for aspect ratio */
         }
     </style>
     <!-- Importing main.js for client-side logic -->
@@ -22,23 +61,24 @@
 </head>
 <body>
 
+<!-- Logo to be displayed -->
+<img src="/static/images/University_of_Liverpool.jpg" alt="University of Liverpool Logo" class="logo">
+
 <!-- Heading for the form for University of Liverpool Project -->
-<h1>University of Liverpool - Dictionary Data</h1>
+<h1>Client - Dictionary Data</h1>
 
 <!-- Form group for Key-Value pairs -->
 <div class="form-group">
-    Key: <input type="text" id="key">
-    Value: <input type="text" id="value">
+    <label>Key: </label>
+    <input type="text" id="key">
+    <label>Value: </label>
+    <input type="text" id="value">
     <button onclick="addData()">Add</button> <!-- Button to add key-value pair -->
 </div>
 
 <!-- Display area for current data -->
 <h3>Current Dictionary Data:</h3>
 <pre id="currentData"></pre>
-
-<!-- Display area for serialized output -->
-<h3>Serialized Dictionary Output:</h3>
-<pre id="serializedOutput"></pre>
 
 <!-- Form group for selecting serialization format -->
 <div class="form-group">
@@ -49,6 +89,10 @@
         <option value="XML">XML</option>
     </select>
 </div>
+
+<!-- Display area for serialized output -->
+<h3>Serialized Dictionary Output:</h3>
+<pre id="serializedOutput"></pre>
 
 <!-- Form group for enabling encryption -->
 <div class="form-group">

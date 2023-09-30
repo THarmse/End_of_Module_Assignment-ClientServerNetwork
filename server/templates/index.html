@@ -3,84 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <title>Server Messages</title>
+    <!-- Enhanced styling for the elements and body -->
     <style>
-    .message-container {
-        background-color: #f4f4f4;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        white-space: pre-wrap; /* Preserves whitespace and offers wrap */
-        word-wrap: break-word;
-        overflow-wrap: break-word;
-    }
-</style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #ffffff;
+        }
+        h1 {
+            color: #333;
+        }
+        .buttonContainer {
+            margin-bottom: 20px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .message-container {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;  /* Light gray background */
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        .logo {
+            width: 300px;
+            height: auto;
+        }
+    </style>
 </head>
 <body>
-    <h1>Received Messages</h1>
-    <div id="container">
-        <div id="buttonContainer">
-            <button id="clearButton">Clear Messages</button>
-            <!-- Download button if config is for File -->
-            <button id="downloadButton" style="display:none;">Download File</button>
-        </div>
-        <div id="filePath" style="display:none;">
-            <!-- File path will be displayed here when config is 'file' -->
-            <p>File path: <span id="filePathText"></span></p>
-        </div>
-        <div id="messages">
-            <!-- Client Messages received will be displayed here -->
-        </div>
+
+<!-- Logo to be displayed -->
+<img src="/static/images/University_of_Liverpool.jpg" alt="University of Liverpool Logo" class="logo">
+
+<!-- Heading for the Server Messages -->
+<h1>University of Liverpool - Server - Received Messages</h1>
+
+<div id="container">
+    <div id="buttonContainer">
+        <button id="clearButton">Clear Messages</button>
+        <!-- Download button if config is for File -->
+        <button id="downloadButton" style="display:none;">Download File</button>
     </div>
+    <div id="filePath" style="display:none;">
+        <!-- File path will be displayed here when config is 'file' -->
+        <p>File path: <span id="filePathText"></span></p>
+    </div>
+    <div id="messages">
+        <!-- Client Messages received will be displayed here -->
+    </div>
+</div>
 
-    <script>
-        // Function to escape special HTML characters
-        function escapeHtml(unsafe) {
-            return unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
-                        .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-        }
+<script>
+    // Function to escape special HTML characters
+    function escapeHtml(unsafe) {
+        return unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
 
-        // Fetch messages from the server and update the page
-        function updateMessages() {
-            fetch('/get_messages')
-            .then(response => response.json())
-            .then(data => {
-                let messageDiv = document.getElementById("messages");
-                messageDiv.innerHTML = '';
+    // Fetch messages from the server and update the page
+    function updateMessages() {
+        fetch('/get_messages')
+        .then(response => response.json())
+        .then(data => {
+            let messageDiv = document.getElementById("messages");
+            messageDiv.innerHTML = '';
 
-                // Handle 'file_or_print_display' config from server
-                if (data.file_or_print === 'file') {
-                    document.getElementById("downloadButton").style.display = 'block';
-                    document.getElementById("filePath").style.display = 'block';
-                    document.getElementById("filePathText").innerText = data.file_path; // Assuming server returns a 'file_path' attribute
-                } else {
-                    document.getElementById("downloadButton").style.display = 'none';
-                    document.getElementById("filePath").style.display = 'none';
-                }
+            if (data.file_or_print === 'file') {
+                document.getElementById("downloadButton").style.display = 'block';
+                document.getElementById("filePath").style.display = 'block';
+                document.getElementById("filePathText").innerText = data.file_path;
+            } else {
+                document.getElementById("downloadButton").style.display = 'none';
+                document.getElementById("filePath").style.display = 'none';
+            }
 
-                data.received_messages.forEach(message => {
-                    let escapedMessage = escapeHtml(message);
-                    messageDiv.innerHTML += `<div class="message-container">${escapedMessage}</div>`;
-                });
-            });
-        }
-
-        // Clear messages on server and update the page
-        document.getElementById("clearButton").addEventListener("click", function() {
-            fetch('/clear_messages', {
-                method: 'POST',
-            }).then(() => {
-                updateMessages();  // Refresh content after clearing
+            data.received_messages.forEach(message => {
+                let escapedMessage = escapeHtml(message);
+                messageDiv.innerHTML += `<div class="message-container">${escapedMessage}</div>`;
             });
         });
+    }
 
-
-        // Download file
-        document.getElementById("downloadButton").addEventListener("click", function() {
-            window.location.href = '/download_file';
+    document.getElementById("clearButton").addEventListener("click", function() {
+        fetch('/clear_messages', {
+            method: 'POST',
+        }).then(() => {
+            updateMessages();
         });
+    });
 
-        // Update messages every 2 seconds
-        setInterval(updateMessages, 2000);
-    </script>
+    document.getElementById("downloadButton").addEventListener("click", function() {
+        window.location.href = '/download_file';
+    });
+
+    setInterval(updateMessages, 2000);
+</script>
+
 </body>
 </html>
