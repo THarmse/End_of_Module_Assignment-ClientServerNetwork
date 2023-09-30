@@ -1,0 +1,15 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /opt/liverpool
+hooks:
+  ApplicationStop:
+    - location: deploy_scripts/stop_client.sh
+      timeout: 300
+  BeforeInstall:
+    - location: deploy_scripts/install_dependencies.sh
+      timeout: 300
+  ApplicationStart:
+    - location: deploy_scripts/start_client.sh
+      timeout: 300
