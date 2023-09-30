@@ -4,13 +4,16 @@
     <meta charset="UTF-8">
     <title>Server Messages</title>
     <style>
-        pre {
-            background-color: #f4f4f4;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-    </style>
+    .message-container {
+        background-color: #f4f4f4;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        white-space: pre-wrap; /* Preserves whitespace and offers wrap */
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+</style>
 </head>
 <body>
     <h1>Received Messages</h1>
@@ -56,7 +59,7 @@
 
                 data.received_messages.forEach(message => {
                     let escapedMessage = escapeHtml(message);
-                    messageDiv.innerHTML += `<pre>${escapedMessage}</pre>`;
+                    messageDiv.innerHTML += `<div class="message-container">${escapedMessage}</div>`;
                 });
             });
         }
