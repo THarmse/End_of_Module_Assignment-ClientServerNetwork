@@ -1,2 +1,3 @@
 host: "localhost"
 port: 8080
+file_or_print_display: "file" #Available Options: file  print

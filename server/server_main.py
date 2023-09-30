@@ -6,14 +6,14 @@ import os
 import base64
 from common import decryption
 from common.load_config import load_config
+from pathlib import Path
 
 app = Flask(__name__)
 
 # Store received messages
 received_messages = []
 
-
-def handle_received_data(data, is_encrypted, is_file, file_path):
+def handle_received_data(data, is_encrypted, is_file, file_path, file_or_print):
     """
     Function to handle the received data for both console output and Flask display.
 
@@ -22,45 +22,45 @@ def handle_received_data(data, is_encrypted, is_file, file_path):
     is_encrypted: Whether the data is encrypted or not.
     is_file: Whether the data is a file or not.
     file_path: The path to the file if the data is a file.
+    file_or_print: The configuration for displaying in file or print.
     """
     display_message = ""
 
     if is_file:
-        # Handle file data
         base64_decoded_data = base64.b64decode(data)
         with open(file_path, "wb") as f:
             f.write(base64_decoded_data)
 
-        absolute_file_path = os.path.abspath(file_path)
+        absolute_file_path = Path(file_path).resolve()
 
         if is_encrypted:
             decrypted_data = decryption.decrypt_data(base64_decoded_data).decode('utf-8')
             display_message += f"File Content (Decrypted for viewing): {decrypted_data}"
         else:
-            # If the data is not encrypted, read it directly from the file
             with open(file_path, "r") as f:
                 display_message += f"File Content: {f.read()}"
 
         display_message += f" - The Text File is saved at: {absolute_file_path}"
 
     else:
-        # Handle non-file data
         if is_encrypted:
             decrypted_data = decryption.decrypt_data(data.encode()).decode('utf-8')
             display_message = f"Received data (Decrypted for viewing): {decrypted_data}"
         else:
             display_message = f"Received data: {data}"
 
-    # Print to console
-    print(display_message)
+    if file_or_print == "file":
+        with open("text_files/all_messages_received.txt", "a") as f:
+            f.write(display_message + "\n")
+    else:
+        print(display_message)
+        received_messages.append(display_message)
 
-    # Add to Flask display
-    received_messages.append(display_message)
 
-
-# Existing server_main code with minor changes
 def server_main():
     config = load_config('server_config.yaml', caller='server')
+    file_or_print = config.get('file_or_print_display', "print")
+
     server_socket = socket(AF_INET, SOCK_STREAM)
     host = config['host']
     port = config['port']
@@ -78,25 +78,22 @@ def server_main():
         is_file = parsed_data['isFile']
         data_format = parsed_data['dataFormat']
 
-        if not os.path.exists("server/text_files"):
-            os.makedirs("server/text_files")
+        if not os.path.exists("text_files"):
+            os.makedirs("text_files")
 
-        file_path = "server/text_files/received_file.txt"
+        file_path = "text_files/received_file.txt"
 
-        handle_received_data(incoming_data, is_encrypted, is_file, file_path)
+        handle_received_data(incoming_data, is_encrypted, is_file, file_path, file_or_print)
 
         client_socket.close()
-
 
 @app.route('/')
 def index():
     return render_template('index.html', messages=received_messages)
 
-
 @app.route('/get_messages')
 def get_messages():
     return jsonify(received_messages=received_messages)
-
 
 @app.route('/clear_messages', methods=['POST'])
 def clear_messages():
@@ -104,10 +101,8 @@ def clear_messages():
     received_messages.clear()
     return 'Messages cleared', 200
 
-
 def run_flask_app():
     app.run(port=5001)
-
 
 if __name__ == "__main__":
     flask_thread = Thread(target=run_flask_app)
