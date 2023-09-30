@@ -11,6 +11,12 @@ fi
 
 cd /opt/liverpool || { echo "Error changing directory to /opt/liverpool"; exit 1; }
 
+# Check for the existence of requirements.txt
+if [ ! -f "requirements.txt" ]; then
+  echo "requirements.txt does not exist in /opt/liverpool."
+  exit 1
+fi
+
 # Check if pip3 is installed; if not, install it.
 if ! command -v pip3 &> /dev/null; then
   echo "pip3 is not installed. Installing..."
