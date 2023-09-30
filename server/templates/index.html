@@ -3,15 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title>Server Messages</title>
+    <style>
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+    </style>
 </head>
 <body>
     <h1>Received Messages</h1>
-    <div id="messages">
-        <!-- Your messages will be displayed here -->
+    <div id="container">
+        <div id="buttonContainer">
+            <button id="clearButton">Clear Messages</button>
+        </div>
+        <div id="messages">
+            <!-- Client Messages received, will be displayed here -->
+        </div>
     </div>
-    <button id="clearButton">Clear Messages</button>
 
     <script>
+        // Function to escape special HTML characters
+        function escapeHtml(unsafe) {
+            return unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+                        .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+
         // Fetch messages from the server and update the page
         function updateMessages() {
             fetch('/get_messages')
@@ -20,7 +38,8 @@
                 let messageDiv = document.getElementById("messages");
                 messageDiv.innerHTML = '';
                 data.received_messages.forEach(message => {
-                    messageDiv.innerHTML += `<p>${message}</p>`;
+                    let escapedMessage = escapeHtml(message);
+                    messageDiv.innerHTML += `<pre>${escapedMessage}</pre>`;
                 });
             });
         }

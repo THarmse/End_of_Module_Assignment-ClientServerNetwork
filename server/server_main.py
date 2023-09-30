@@ -76,6 +76,7 @@ def server_main():
         incoming_data = parsed_data['data']
         is_encrypted = parsed_data['isEncrypted']
         is_file = parsed_data['isFile']
+        data_format = parsed_data['dataFormat']
 
         if not os.path.exists("server/text_files"):
             os.makedirs("server/text_files")

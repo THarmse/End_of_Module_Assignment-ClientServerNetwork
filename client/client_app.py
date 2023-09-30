@@ -64,7 +64,8 @@ def send_data():
     to_send = json.dumps({
         "data": serialized_data,
         "isEncrypted": encrypt,
-        "isFile": as_text_file
+        "isFile": as_text_file,
+        "dataFormat": serialize_format
     })
 
     # Load server configurations and establish a socket connection
