@@ -1,3 +1,5 @@
 host: "localhost"
 port: 8080
-file_or_print_display: "print" #Available Options: file  print
+file_or_print_display: "file" #Available Options: file  print
+received_file_path: "text_files/received_file.txt"
+all_messages_received_path: "text_files/all_messages_received.txt"

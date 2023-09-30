@@ -13,20 +13,23 @@ app = Flask(__name__)
 # Store received messages
 received_messages = []
 
+# Load configuration settings from server_config.yaml
 config = load_config('server_config.yaml', caller='server')
 file_or_print = config.get('file_or_print_display', "print")
+received_file_path = config.get('received_file_path', "text_files/received_file.txt")
+all_messages_received_path = config.get('all_messages_received_path', "text_files/all_messages_received.txt")
 
 
 def handle_received_data(data, is_encrypted, is_file, file_path, file_or_print):
     """
-    Function to handle the received data for both console output and Flask display.
+    Handles received data and writes to either console or file depending on configuration.
 
     Parameters:
-    data: The received data.
-    is_encrypted: Whether the data is encrypted or not.
-    is_file: Whether the data is a file or not.
-    file_path: The path to the file if the data is a file.
-    file_or_print: The configuration for displaying in file or print.
+    data (str): The data received from the client.
+    is_encrypted (bool): Indicates whether the data is encrypted.
+    is_file (bool): Indicates whether the received data is a file.
+    file_path (str): The path to save the received file, if it is a file.
+    file_or_print (str): Configuration to either display data on the console or write to a file.
     """
     display_message = ""
 
@@ -54,7 +57,7 @@ def handle_received_data(data, is_encrypted, is_file, file_path, file_or_print):
             display_message = f"Received data: {data}"
 
     if file_or_print == "file":
-        with open("text_files/all_messages_received.txt", "a") as f:
+        with open(all_messages_received_path, "a") as f:
             f.write(display_message + "\n")
     else:
         print(display_message)
@@ -62,12 +65,16 @@ def handle_received_data(data, is_encrypted, is_file, file_path, file_or_print):
 
 
 def server_main():
+    """
+    Main function to run the server.
+    """
+    # Server settings
     config = load_config('server_config.yaml', caller='server')
     file_or_print = config.get('file_or_print_display', "print")
-
-    server_socket = socket(AF_INET, SOCK_STREAM)
     host = config['host']
     port = config['port']
+
+    server_socket = socket(AF_INET, SOCK_STREAM)
     server_socket.bind((host, port))
     server_socket.listen(5)
 
@@ -77,17 +84,15 @@ def server_main():
 
         received_data = client_socket.recv(4096).decode('utf-8')
         parsed_data = json.loads(received_data)
+
         incoming_data = parsed_data['data']
         is_encrypted = parsed_data['isEncrypted']
         is_file = parsed_data['isFile']
-        data_format = parsed_data['dataFormat']
 
         if not os.path.exists("text_files"):
             os.makedirs("text_files")
 
-        file_path = "text_files/received_file.txt"
-
-        handle_received_data(incoming_data, is_encrypted, is_file, file_path, file_or_print)
+        handle_received_data(incoming_data, is_encrypted, is_file, received_file_path, file_or_print)
 
         client_socket.close()
 
@@ -99,29 +104,26 @@ def index():
 
 @app.route('/get_messages')
 def get_messages():
-    config = load_config('server_config.yaml', caller='server')
-    return jsonify(received_messages=received_messages, file_or_print=config['file_or_print_display'],
-                   file_path=os.path.abspath("text_files/all_messages_received.txt"))
+    return jsonify(received_messages=received_messages, file_or_print=file_or_print,
+                   file_path=os.path.abspath(all_messages_received_path))
 
 
 @app.route('/download_file')
 def download_file():
-    file_path = "text_files/all_messages_received.txt"
-    return send_file(file_path, as_attachment=True)
+    return send_file(all_messages_received_path, as_attachment=True)
 
 
 @app.route('/clear_messages', methods=['POST'])
 def clear_messages():
-    global received_messages  # Declare the variable as global if you're going to modify it
+    global received_messages
 
     if file_or_print == 'print':
         received_messages.clear()
     elif file_or_print == 'file':
-        with open('text_files/all_messages_received.txt', 'w') as f:  # Correct the file path
-            f.write('')  # Clear all file content
+        with open(all_messages_received_path, 'w') as f:
+            f.write('')
 
     return '', 204
-
 
 
 def run_flask_app():
