@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, send_file
 from socket import socket, AF_INET, SOCK_STREAM
 from threading import Thread
 import json
@@ -12,6 +12,9 @@ app = Flask(__name__)
 
 # Store received messages
 received_messages = []
+
+config = load_config('server_config.yaml', caller='server')
+
 
 def handle_received_data(data, is_encrypted, is_file, file_path, file_or_print):
     """
@@ -87,13 +90,24 @@ def server_main():
 
         client_socket.close()
 
+
 @app.route('/')
 def index():
     return render_template('index.html', messages=received_messages)
 
+
 @app.route('/get_messages')
 def get_messages():
-    return jsonify(received_messages=received_messages)
+    config = load_config('server_config.yaml', caller='server')
+    return jsonify(received_messages=received_messages, file_or_print=config['file_or_print_display'],
+                   file_path=os.path.abspath("text_files/all_messages_received.txt"))
+
+
+@app.route('/download_file')
+def download_file():
+    file_path = "text_files/all_messages_received.txt"
+    return send_file(file_path, as_attachment=True)
+
 
 @app.route('/clear_messages', methods=['POST'])
 def clear_messages():
@@ -101,8 +115,10 @@ def clear_messages():
     received_messages.clear()
     return 'Messages cleared', 200
 
+
 def run_flask_app():
     app.run(port=5001)
+
 
 if __name__ == "__main__":
     flask_thread = Thread(target=run_flask_app)
