@@ -14,6 +14,7 @@ app = Flask(__name__)
 received_messages = []
 
 config = load_config('server_config.yaml', caller='server')
+file_or_print = config.get('file_or_print_display', "print")
 
 
 def handle_received_data(data, is_encrypted, is_file, file_path, file_or_print):
@@ -111,9 +112,16 @@ def download_file():
 
 @app.route('/clear_messages', methods=['POST'])
 def clear_messages():
-    global received_messages
-    received_messages.clear()
-    return 'Messages cleared', 200
+    global received_messages  # Declare the variable as global if you're going to modify it
+
+    if file_or_print == 'print':
+        received_messages.clear()
+    elif file_or_print == 'file':
+        with open('text_files/all_messages_received.txt', 'w') as f:  # Correct the file path
+            f.write('')  # Clear all file content
+
+    return '', 204
+
 
 
 def run_flask_app():

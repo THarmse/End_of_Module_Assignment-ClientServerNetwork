@@ -66,9 +66,10 @@
             fetch('/clear_messages', {
                 method: 'POST',
             }).then(() => {
-                document.getElementById("messages").innerHTML = '';
+                updateMessages();  // Refresh content after clearing
             });
         });
+
 
         // Download file
         document.getElementById("downloadButton").addEventListener("click", function() {
