@@ -1,2 +1,1 @@
-Received data: {"TEDD": "Dd"}
-File Content: {"TEDD": "Dd", "TEDD3445": "Dd"} - The Text File is saved at: C:\Users\TheodorHarmse\OneDrive - Zero&One\Documents\University of Liverpool\2_CSCK541 Software Development in Practice\End Module Assignment\Code\server\text_files\received_file.txt
+Received data: {"df": "dff"}
