@@ -59,7 +59,7 @@ def handle_received_data(data, is_encrypted, is_file, file_path, file_or_print):
             with open(file_path, "r") as f:
                 display_message += f"File Content: {f.read()}"
 
-        display_message += f" - The Text File is saved at: {absolute_file_path}"
+        display_message += f" - The Client Received File is saved at: {absolute_file_path}"
 
     else:
         if is_encrypted:
