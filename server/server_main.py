@@ -123,7 +123,7 @@ def get_messages():
                    file_path=os.path.abspath(all_messages_received_path))
 
 
-@app.route('/clearButton')
+@app.route('/download_file')
 def download_file():
     return send_file(all_messages_received_path, as_attachment=True)
 
