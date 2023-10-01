@@ -142,19 +142,30 @@ def clear_messages():
 @app.route('/update_config', methods=['POST'])
 def update_config():
     global file_or_print  # Declare global variable for updates
+
     data = request.json
     new_value = data.get('file_or_print')
-    try:
-        with open('config/server_config.yaml', 'r') as f:
-            config_data = yaml.safe_load(f)
 
+    try:
+        # Load the current config using load_config function
+        config_data = load_config('server_config.yaml', caller='server')
+
+        # Update the value in the loaded config
         config_data['file_or_print_display'] = new_value
 
-        with open('config/server_config.yaml', 'w') as f:
+        # Get the directory path for the config file
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        root_dir = os.path.dirname(current_dir)
+        config_folder = os.path.join(root_dir, 'server', 'config')
+        full_path = os.path.join(config_folder, 'server_config.yaml')
+
+        # Save the updated config back to the file
+        with open(full_path, 'w') as f:
             yaml.safe_dump(config_data, f, default_flow_style=False)
 
         file_or_print = new_value
         return jsonify({'status': 'success'})
+
     except Exception as e:
         return jsonify({'status': 'failed', 'error': str(e)})
 
