@@ -1,5 +1,0 @@
-Received data: <root><item><key>Ted</key><value>dfdf</value></item></root>
-Received data: <root><item><key>Ted</key><value>dfdf</value></item></root>
-File Content (Decrypted for viewing): <root><item><key>Ted</key><value>dfdf</value></item></root> - The Text File is saved at: C:\Users\TheodorHarmse\OneDrive - Zero&One\Documents\University of Liverpool\2_CSCK541 Software Development in Practice\End Module Assignment\Code\text_files\received_file.txt
-File Content (Decrypted for viewing): <root><item><key>Ted</key><value>dfdf</value></item></root> - The Text File is saved at: C:\Users\TheodorHarmse\OneDrive - Zero&One\Documents\University of Liverpool\2_CSCK541 Software Development in Practice\End Module Assignment\Code\text_files\received_file.txt
-Received data (Decrypted for viewing): <root><item><key>Ted</key><value>dfdf</value></item></root>

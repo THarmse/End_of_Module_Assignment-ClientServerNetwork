@@ -52,6 +52,12 @@
 <!-- Heading for the Server Messages -->
 <h1>Server - Received Messages</h1>
 
+<!-- UI Control for Updating Configuration -->
+<div>
+    <label for="configSlider">Switch to File:</label>
+    <input type="checkbox" id="configSlider">
+</div>
+
 <div id="container">
     <div id="buttonContainer">
         <button id="clearButton">Clear Messages</button>
@@ -82,6 +88,8 @@
             let messageDiv = document.getElementById("messages");
             messageDiv.innerHTML = '';
 
+            document.getElementById("configSlider").checked = (data.file_or_print === 'file');
+
             if (data.file_or_print === 'file') {
                 document.getElementById("downloadButton").style.display = 'block';
                 document.getElementById("filePath").style.display = 'block';
@@ -108,6 +116,30 @@
 
     document.getElementById("downloadButton").addEventListener("click", function() {
         window.location.href = '/download_file';
+    });
+
+    // Function to update server config for file or print
+    function updateConfig(new_value) {
+        fetch('/update_config', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 'file_or_print': new_value })
+        }).then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert("Configuration updated successfully");
+            } else {
+                alert("Failed to update configuration: " + data.error);
+            }
+        });
+    }
+
+    // Add event listener to UI control
+    document.getElementById("configSlider").addEventListener("change", function() {
+        let new_value = this.checked ? "file" : "print";
+        updateConfig(new_value);
     });
 
     setInterval(updateMessages, 2000);

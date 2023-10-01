@@ -1,12 +1,22 @@
-from flask import Flask, render_template, jsonify, send_file
+from flask import Flask, render_template, jsonify, send_file, request
 from socket import socket, AF_INET, SOCK_STREAM
 from threading import Thread
 import json
 import os
 import base64
+import yaml
+from yaml.representer import SafeRepresenter
 from common import decryption
 from common.load_config import load_config
 from pathlib import Path
+
+
+# Custom representer to always quote strings as the flask app will replace the config
+def quoted_presenter(dumper, data):
+    return dumper.represent_scalar('tag:yaml.org,2002:str', data, style='"')
+
+# Add the custom string presenter
+SafeRepresenter.add_representer(str, quoted_presenter)
 
 app = Flask(__name__)
 
@@ -15,9 +25,9 @@ received_messages = []
 
 # Load configuration settings from server_config.yaml
 config = load_config('server_config.yaml', caller='server')
-file_or_print = config.get('file_or_print_display', "print")
-received_file_path = config.get('received_file_path', "text_files/received_file.txt")
-all_messages_received_path = config.get('all_messages_received_path', "text_files/all_messages_received.txt")
+file_or_print = None
+received_file_path = config.get('received_file_path')
+all_messages_received_path = config.get('all_messages_received_path')
 
 
 def handle_received_data(data, is_encrypted, is_file, file_path, file_or_print):
@@ -70,7 +80,7 @@ def server_main():
     """
     # Server settings
     config = load_config('server_config.yaml', caller='server')
-    file_or_print = config.get('file_or_print_display', "print")
+    global file_or_print  # Declare global variable for updates
     host = config['host']
     port = config['port']
 
@@ -79,6 +89,9 @@ def server_main():
     server_socket.listen(5)
 
     while True:
+        config = load_config('server_config.yaml', caller='server')
+        file_or_print = config.get('file_or_print_display')
+
         client_socket, addr = server_socket.accept()
         print(f"Got a connection from {addr}")
 
@@ -124,6 +137,26 @@ def clear_messages():
             f.write('')
 
     return '', 204
+
+
+@app.route('/update_config', methods=['POST'])
+def update_config():
+    global file_or_print  # Declare global variable for updates
+    data = request.json
+    new_value = data.get('file_or_print')
+    try:
+        with open('config/server_config.yaml', 'r') as f:
+            config_data = yaml.safe_load(f)
+
+        config_data['file_or_print_display'] = new_value
+
+        with open('config/server_config.yaml', 'w') as f:
+            yaml.safe_dump(config_data, f, default_flow_style=False)
+
+        file_or_print = new_value
+        return jsonify({'status': 'success'})
+    except Exception as e:
+        return jsonify({'status': 'failed', 'error': str(e)})
 
 
 def run_flask_app():
