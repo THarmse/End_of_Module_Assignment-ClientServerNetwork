@@ -26,8 +26,10 @@ received_messages = []
 # Load configuration settings from server_config.yaml
 config = load_config('server_config.yaml', caller='server')
 file_or_print = None
-received_file_path = config.get('received_file_path')
-all_messages_received_path = config.get('all_messages_received_path')
+root_dir = os.path.dirname(os.path.abspath(__file__))
+received_file_path = os.path.join(root_dir, config.get('received_file_path').replace("/", os.sep))
+all_messages_received_path = os.path.join(root_dir, config.get('all_messages_received_path').replace("/", os.sep))
+
 
 
 def handle_received_data(data, is_encrypted, is_file, file_path, file_or_print):
