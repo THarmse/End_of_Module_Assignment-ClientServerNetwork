@@ -15,6 +15,7 @@ from pathlib import Path
 def quoted_presenter(dumper, data):
     return dumper.represent_scalar('tag:yaml.org,2002:str', data, style='"')
 
+
 # Add the custom string presenter
 SafeRepresenter.add_representer(str, quoted_presenter)
 
@@ -29,7 +30,6 @@ file_or_print = None
 root_dir = os.path.dirname(os.path.abspath(__file__))
 received_file_path = os.path.join(root_dir, config.get('received_file_path').replace("/", os.sep))
 all_messages_received_path = os.path.join(root_dir, config.get('all_messages_received_path').replace("/", os.sep))
-
 
 
 def handle_received_data(data, is_encrypted, is_file, file_path, file_or_print):
@@ -123,9 +123,14 @@ def get_messages():
                    file_path=os.path.abspath(all_messages_received_path))
 
 
-@app.route('/download_file')
+@app.route('/clearButton')
 def download_file():
     return send_file(all_messages_received_path, as_attachment=True)
+
+
+@app.route('/download_client_file')
+def download_client_file():
+    return send_file(received_file_path, as_attachment=True)
 
 
 @app.route('/clear_messages', methods=['POST'])

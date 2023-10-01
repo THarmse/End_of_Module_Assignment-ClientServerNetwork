@@ -5,44 +5,57 @@
     <title>Server Messages</title>
     <!-- Enhanced styling for the elements and body -->
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #ffffff;
-        }
-        h1 {
-            color: #333;
-        }
-        .buttonContainer {
-            margin-bottom: 20px;
-        }
-        button {
-            background-color: #007bff;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin: 5px;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        .message-container {
-            margin-bottom: 15px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #f9f9f9;  /* Light gray background */
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-        }
-        .logo {
-            width: 300px;
-            height: auto;
-        }
-    </style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-color: #ffffff;
+    }
+    h1 {
+        color: #333;
+    }
+    .buttonContainer {
+        margin-bottom: 20px;
+    }
+    button {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 5px;
+        width: 300px;  /* Setting the width for all buttons to be consistent */
+    }
+    button:hover {
+        background-color: #0056b3;
+    }
+    /* Button for clearing messages */
+    #clearButton {
+        background-color: #FF6666;
+    }
+    /* Button for downloading client received file */
+    #downloadClientFileButton {
+        background-color: #66B2FF;
+    }
+    /* Button for downloading all received messages */
+    #downloadButton {
+        background-color: #38a138;
+    }
+    .message-container {
+        margin-bottom: 15px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+    .logo {
+        width: 300px;
+        height: auto;
+    }
+</style>
 </head>
 <body>
 
@@ -60,13 +73,16 @@
 
 <div id="container">
     <div id="buttonContainer">
-        <button id="clearButton">Clear Messages</button>
+        <!-- Clear Messages from print mode or file mode, whichever is in active mode -->
+        <button id="clearButton" class="button-width button-clear">Clear Messages</button>
         <!-- Download button if config is for File -->
-        <button id="downloadButton" style="display:none;">Download File</button>
+        <button id="downloadClientFileButton" class="button-width button-download-client" style="display:none;">Download Client Received File</button>
+        <!-- File path will be displayed here when config is 'file' -->
+        <button id="downloadButton" class="button-width button-download-all" style="display:none;">Download All Received Messages File</button>
     </div>
     <div id="filePath" style="display:none;">
         <!-- File path will be displayed here when config is 'file' -->
-        <p>File path: <span id="filePathText"></span></p>
+        <p>Server File Path for All Received Messages: <span id="filePathText"></span></p>
     </div>
     <div id="messages">
         <!-- Client Messages received will be displayed here -->
@@ -92,10 +108,12 @@
 
             if (data.file_or_print === 'file') {
                 document.getElementById("downloadButton").style.display = 'block';
+                document.getElementById("downloadClientFileButton").style.display = 'block';
                 document.getElementById("filePath").style.display = 'block';
                 document.getElementById("filePathText").innerText = data.file_path;
             } else {
                 document.getElementById("downloadButton").style.display = 'none';
+                document.getElementById("downloadClientFileButton").style.display = 'block';
                 document.getElementById("filePath").style.display = 'none';
             }
 
@@ -116,6 +134,10 @@
 
     document.getElementById("downloadButton").addEventListener("click", function() {
         window.location.href = '/download_file';
+    });
+
+    document.getElementById("downloadClientFileButton").addEventListener("click", function() {
+        window.location.href = '/download_client_file';
     });
 
     // Function to update server config for file or print
