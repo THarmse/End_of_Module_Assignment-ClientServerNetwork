@@ -1,3 +1,3 @@
-Received data: {"Stewie": "Griffin", "Teddy": "Harmse"}
-File Content: {"Stewie": "Griffin", "Teddy": "Harmse"} - The Text File is saved at: C:\Users\TheodorHarmse\OneDrive - Zero&One\Documents\University of Liverpool\2_CSCK541 Software Development in Practice\End Module Assignment\Code\server\text_files\received_file.txt
-File Content (Decrypted for viewing): {"Stewie": "Griffin", "Teddy": "Harmse"} - The Text File is saved at: C:\Users\TheodorHarmse\OneDrive - Zero&One\Documents\University of Liverpool\2_CSCK541 Software Development in Practice\End Module Assignment\Code\server\text_files\received_file.txt
+Received data: {"Ted": "df"}
+File Content: {"dsf": "daf"} - The Client Received File is saved at: C:\Users\TheodorHarmse\OneDrive - Zero&One\Documents\University of Liverpool\2_CSCK541 Software Development in Practice\End Module Assignment\Code\server\text_files\received_file.txt
+File Content (Decrypted for viewing): {"dsf": "daf"} - The Client Received File is saved at: C:\Users\TheodorHarmse\OneDrive - Zero&One\Documents\University of Liverpool\2_CSCK541 Software Development in Practice\End Module Assignment\Code\server\text_files\received_file.txt

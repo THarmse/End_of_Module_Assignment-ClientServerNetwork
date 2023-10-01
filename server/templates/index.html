@@ -72,6 +72,7 @@
 </div>
 
 <div id="container">
+    <div id="successMessage" style="color:green; display:none;"></div>
     <div id="buttonContainer">
         <!-- Clear Messages from print mode or file mode, whichever is in active mode -->
         <button id="clearButton" class="button-width button-clear">Clear Messages</button>
@@ -130,14 +131,20 @@
         }).then(() => {
             updateMessages();
         });
+        // Display the success message
+        displaySuccessMessage('Messages Cleared Successfully!');
     });
 
     document.getElementById("downloadButton").addEventListener("click", function() {
         window.location.href = '/download_file';
+            // Display the success message
+        displaySuccessMessage('Download Successful!');
     });
 
     document.getElementById("downloadClientFileButton").addEventListener("click", function() {
         window.location.href = '/download_client_file';
+        // Display the success message
+        displaySuccessMessage('Download Successful!');
     });
 
     // Function to update server config for file or print
@@ -156,6 +163,18 @@
                 alert("Failed to update configuration: " + data.error);
             }
         });
+    }
+
+    // Function to display a success message
+    function displaySuccessMessage(message) {
+        const successMessageElement = document.getElementById('successMessage');
+        successMessageElement.textContent = message;
+        successMessageElement.style.display = 'block';
+
+        // Hide the message after 3 seconds
+        setTimeout(function() {
+            successMessageElement.style.display = 'none';
+        }, 3000);
     }
 
     // Add event listener to UI control

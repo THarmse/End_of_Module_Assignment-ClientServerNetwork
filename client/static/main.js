@@ -89,4 +89,19 @@ function submitData() {
   .catch((error) => {
     console.error("Error:", error); // Log any errors for debugging
   });
+  // Display the success message
+  displaySuccessMessage('Data Submitted Successfully!');
 }
+/**
+ * Function to how message for successful submission to server
+ */
+    function displaySuccessMessage(message) {
+        const successMessageElement = document.getElementById('successMessage');
+        successMessageElement.textContent = message;
+        successMessageElement.style.display = 'block';
+
+        // Hide the message after 3 seconds
+        setTimeout(function() {
+            successMessageElement.style.display = 'none';
+        }, 3000);
+    }
