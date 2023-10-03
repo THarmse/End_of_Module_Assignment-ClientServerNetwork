@@ -1,5 +1,5 @@
 "all_messages_received_path": "text_files/all_messages_received.txt"
-"file_or_print_display": "file"
+"file_or_print_display": "print"
 "host": "0.0.0.0"
 "port": 8080
 "received_file_path": "text_files/received_file.txt"

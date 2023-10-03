@@ -2,7 +2,7 @@ import unittest
 import json
 import base64
 from unittest.mock import patch
-from client_app import app
+from client.client_app import app
 import tempfile
 
 class ClientTestCase(unittest.TestCase):
