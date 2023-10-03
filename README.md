@@ -70,11 +70,11 @@ nd_of_Module_Assignment-ClientServerNetwork/
 ┣ README.md  
 ┗ requirements.txt  
 
-
 ## Unit test
-- `test_client.py` - contains unit test for the client app.
+- `test_client.py` - contains unit test for the client app.  
   This test ensures that the `send_data` endpoint of the application behaves correctly.
-- `test_server.py` - contains unit test for the server.
+- `test_server.py` - contains unit test for the server.  
   These tests verify the functionality of various endpoints in the server.
   
 ## License
+This project is open-source. (MIT License)
