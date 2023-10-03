@@ -1,5 +1,10 @@
 import unittest
+
+from common import decryption
 from server.server_main import app, handle_received_data
+import builtins
+from unittest.mock import patch
+
 
 class ServerTestCase(unittest.TestCase):
     
@@ -39,7 +44,7 @@ class ServerTestCase(unittest.TestCase):
     
     #Send a POST request to '/update_config' with JSON data contain the key
     #'file_or_print' set to 'file' and check if the response status code is 200
-    #alsi check the response JSON data for the presence of the key 'status' set to 'success'
+    #also check the response JSON data for the presence of the key 'status' set to 'success'
     def test_update_config(self):
         data = {'file_or_print':'file'}
         response = self.app.post('update_config',json =data)
@@ -62,21 +67,21 @@ class ServerTestCase(unittest.TestCase):
             display_message.append(message)
 
         # Replace the original print function with the mock function
-        original_print = __builtins__.print
-        __builtins__.print = mock_print
+        original_print = builtins.print
+        builtins.print = mock_print
         
         # Call the message handling function
         handle_received_data(data, is_encrypted, is_file, file_path, file_or_print)
 
         # Restore the original print function
-        __builtins__.print = original_print
+        builtins.print = original_print
 
         # Check if the message is added to received_messages
         self.assertIn(f"Received data: {data}", display_message)
 
     def test_handle_received_data_encrypted_message(self):
         # Simulate receiving an encrypted message
-        encrypted_data = "Base64EncodedEncryptedData"
+        encrypted_data = "EncryptedMessage"
         is_encrypted = True
         is_file = False
         file_path = "test.txt"
@@ -87,20 +92,23 @@ class ServerTestCase(unittest.TestCase):
 
         # Create a mock print function to capture printed messages
         def mock_print(message):
-                display_messages.append(message)
+            display_messages.append(message)
 
         # Replace the original print function with the mock function
-        original_print = __builtins__.print
-        __builtins__.print = mock_print
+        original_print = builtins.print
+        builtins.print = mock_print
 
-        # Call the message handling function
-        handle_received_data(encrypted_data, is_encrypted, is_file, file_path, file_or_print)
+        # Mock the decrypt_data function to return a predefined value
+        with patch("common.decryption.decrypt_data", return_value=b"DecryptedMessage"):
+            # Call the message handling function inside the mock block
+            handle_received_data(encrypted_data, is_encrypted, is_file, file_path, file_or_print)
 
         # Restore the original print function
-        __builtins__.print = original_print
+        builtins.print = original_print
 
         # Check if the decrypted message is captured in printed_messages
-        self.assertIn(f"Received data (Decrypted for viewing): DecryptedMessageHere", display_messages)        
+        self.assertIn(f"Received data (Decrypted for viewing): DecryptedMessage", display_messages)
+
 
 if __name__ == '__main__':
     unittest.main()
