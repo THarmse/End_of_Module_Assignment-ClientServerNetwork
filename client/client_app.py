@@ -51,7 +51,7 @@ def send_data():
 
     # If encryption is selected, encrypt the serialized data
     if encrypt:
-        serialized_data = encryption.encrypt_data(serialized_data.encode())
+        serialized_data = encryption.encrypt_data(serialized_data.encode()).decode()
 
     # If the option for a text file is selected, write the serialized data into a text file
     if as_text_file:
