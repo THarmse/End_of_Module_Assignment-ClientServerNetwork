@@ -5,7 +5,7 @@ from unittest.mock import patch
 from client_app import app
 import tempfile
 
-class MyTestCase(unittest.TestCase):
+class ClientTestCase(unittest.TestCase):
     
     def setUp(self):
         app.config['TESTING'] = True
