@@ -12,9 +12,9 @@ class ClientTestCase(unittest.TestCase):
         app.config['TESTING'] = True
         self.app = app.test_client()
 
-    @patch('client_app.encryption.encrypt_data')
+    @patch('client.client_app.encryption.encrypt_data')
     # Mock the encryption function
-    @patch('client_app.create_temp_text_file')
+    @patch('client.client_app.create_temp_text_file')
     # Mock the text file creation function
     @patch('socket.socket')
     def test_send_data(self, mock_socket, mock_create_temp_text_file, mock_encrypt_data):
@@ -25,11 +25,12 @@ class ClientTestCase(unittest.TestCase):
             "asTextFile": True
         }  # Prepare a sample JSON request
 
-        mock_encrypt_data.return_value = json.dumps(sample_data['data'])
+        encrypted_data_bytes = b"encrypted_content"
+        mock_encrypt_data.return_value = encrypted_data_bytes
         # Mock the behavior of the encryption function
 
         with tempfile.NamedTemporaryFile(delete=False) as temp_file:
-            temp_file.write(b'file content')  # Write binary content to the temporary file
+            temp_file.write(encrypted_data_bytes)  # Write binary content to the temporary file
             temp_file.flush()  # Flush to ensure content is written
             temp_file_path = temp_file.name
 
@@ -64,8 +65,8 @@ class ClientTestCase(unittest.TestCase):
             'isFile': True,
             'dataFormat': "JSON"
         }
-        # Mock the expected data that should be sent to the server
 
+        # Mock the expected data that should be sent to the server
         mock_socket_send = mock_socket.return_value.send
         with patch('socket.socket') as mock_socket:
             self.app.post('/send_data', json=sample_data)
