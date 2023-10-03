@@ -5,8 +5,9 @@ from unittest.mock import patch
 from client.client_app import app
 import tempfile
 
+
 class ClientTestCase(unittest.TestCase):
-    
+
     def setUp(self):
         app.config['TESTING'] = True
         self.app = app.test_client()
@@ -16,9 +17,7 @@ class ClientTestCase(unittest.TestCase):
     @patch('client_app.create_temp_text_file')
     # Mock the text file creation function
     @patch('socket.socket')
-    
     def test_send_data(self, mock_socket, mock_create_temp_text_file, mock_encrypt_data):
-        
         sample_data = {
             "data": {"key1": "value1"},
             "format": "JSON",
@@ -72,6 +71,7 @@ class ClientTestCase(unittest.TestCase):
             self.app.post('/send_data', json=sample_data)
             mock_socket_send.assert_called_once_with(json.dumps(expected_server_data).encode())
             # Check if the data sent to the server matches expectations
+
 
 if __name__ == '__main__':
     unittest.main()
