@@ -15,7 +15,7 @@ class ServerTestCase(unittest.TestCase):
 
     #send a GET request to 'test_get_messages' and chcek if the response
     #status code is 200
-    #Also check the response JSON data for the presence of('received_message'
+    #Also check the response JSON data for the presence of('received_message',
     # 'file_or_print', 'file_path')
     def test_get_messages(self):
         response = self.app.get('/get_messages')
