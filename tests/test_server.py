@@ -140,6 +140,7 @@ class ServerTestCase(unittest.TestCase):
 
         builtins.print = original_print
         actual_message = display_messages[0].strip()
+        # Check if the file with decrypted message is captured in printed_messages
         self.assertIn(f"File Content (Decrypted for viewing): DecryptedMessage", actual_message)
 
 
@@ -168,7 +169,7 @@ class ServerTestCase(unittest.TestCase):
 
         # Restore the original print function
         builtins.print = original_print
-
+        # Check if the file captured in printed_messages
         actual_message = display_messages[0].strip()
         self.assertIn(f"File Content: {data}",  actual_message)
 
