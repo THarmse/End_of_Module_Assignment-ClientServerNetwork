@@ -27,7 +27,7 @@ cd End_of_Module_Assignment-ClientServerNetwork
 pip install -r requirements.txt
 ```   
 ## How to run the project  
-- Run on the same machine:  
+* Run on the same machine:  
   <br>
   Step 1  
   Open two terminals in the same machine  
@@ -46,10 +46,10 @@ pip install -r requirements.txt
   `python -m client.client_app`  
   Click http://127.0.0.1:5000 to run client on localhost  
 <br>
-- Run the project on different machines  <br>  
-Open the following links on different machines  
-https://livclient.naiva.co.za:5000/  
-https://livserver.naiva.co.za:5001/
+* Run the project on different machines
+  * Open the following links on different machine  
+    * https://livclient.naiva.co.za:5000/  
+    * https://livserver.naiva.co.za:5001/
 
 ## Usage
 
