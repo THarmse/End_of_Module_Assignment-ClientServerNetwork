@@ -44,8 +44,9 @@ pip install -r requirements.txt
   Step 4  
   Run client in terminal 2  
   `python -m client.client_app`  
-  Click http://127.0.0.1:5000 to run client on localhost  
-<br>
+  Click http://127.0.0.1:5000 to run client on localhost   
+
+
 * Run the project on different machines
   * Open the following links on different machine  
     * https://livclient.naiva.co.za:5000/  
