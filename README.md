@@ -21,9 +21,9 @@ git clone https://github.com/THarmse/End_of_Module_Assignment-ClientServerNetwor
 ```
 cd End_of_Module_Assignment-ClientServerNetwork  
 ```  
-3. Install dependencies from requirement.txt
+3. Install dependencies from requirements.txt
 ```
-pip install -r requirement.txt
+pip install -r requirements.txt
 ```   
 
 ## Usage
