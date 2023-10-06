@@ -10,14 +10,26 @@ University of Liverpool - End of Module Assignment - Client Server Network - Rep
 
 SecureFile
 https://pypi.org/project/securefile/
+type `pip install securefile` to install this package in native python  
 ## Installation
-type `pip install securefile` to install this package in native python
 
-https://livclient.naiva.co.za:5000/
-https://livserver.naiva.co.za:5001/
+1. Clone the repository using the following command  
+```
+git clone https://github.com/THarmse/End_of_Module_Assignment-ClientServerNetwork.git
+```     
+2. Navigate to the directory
+```
+cd End_of_Module_Assignment-ClientServerNetwork  
+```  
+3. Install dependencies from requirement.txt
+```
+pip install -r requirement.txt
+```   
 
 ## Usage
 
+https://livclient.naiva.co.za:5000/
+https://livserver.naiva.co.za:5001/
 
 ## Directory Structure
 
