@@ -3,7 +3,7 @@ University of Liverpool - End of Module Assignment - Client Server Network - Rep
 
 # Table of Contents
 - [Installation](#installation)
-- [How to run the project](#how-to-run-the-project-)
+- [How to run the project](#how-to-run-the-project)
 - [Usage](#usage)
 - [Directory Structure](#directory-structure)
 - [Unit test](#unit-test)
