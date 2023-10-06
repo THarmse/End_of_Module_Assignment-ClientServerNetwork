@@ -3,6 +3,7 @@ University of Liverpool - End of Module Assignment - Client Server Network - Rep
 
 # Table of Contents
 - [Installation](#installation)
+- [How to run the project](#how-to-run-the-project-)
 - [Usage](#usage)
 - [Directory Structure](#directory-structure)
 - [Unit test](#unit-test)
@@ -25,11 +26,50 @@ cd End_of_Module_Assignment-ClientServerNetwork
 ```
 pip install -r requirements.txt
 ```   
+## How to run the project  
+- Run on the same machine:  
+  <br>
+  Step 1  
+  Open two terminals in the same machine  
+  <br>
+  Step 2  
+  Navigate to the directory in both terminals  
+  `cd End_of_Module_Assignment-ClientServerNetwork `  
+  <br>
+  Step 3  
+  Run server in terminal 1  
+  `python -m server.server_main`  
+  Click http://127.0.0.1:5001 to run server on localhost  
+  <br>
+  Step 4  
+  Run client in terminal 2  
+  `python -m client.client_app`  
+  Click http://127.0.0.1:5000 to run client on localhost  
+<br>
+- Run the project on different machines  <br>  
+Open the following links on different machines  
+https://livclient.naiva.co.za:5000/  
+https://livserver.naiva.co.za:5001/
 
 ## Usage
 
-https://livclient.naiva.co.za:5000/
-https://livserver.naiva.co.za:5001/
+Client
+* Type in data you want to send and click 'Add'
+    - The entered data will be displayed on the screen, indicating a successful addition
+* Choose the serialization format (JSON, Binary or XML)
+    - The serialized result will be displayed on the screen.
+* Select whether to encrypt
+* Chooses whether to send it as a file
+* Click submit to send out the data  
+* Submitted Successfully! will be displayed on the screen, indicating successful submission of data.  
+
+Server  
+* Configure the option to determine whether save as file.
+  * Checking 'Switch to file' indicate save the received data as a file
+  * Not checking indicates print on the screen
+* 'Clear' Messages button is for deleting the history received data
+* The 'Download Client Received File' button is for downloading files sent by the client.
+* When in save as file mode : The 'Download All Received Messages File' button is for downloading all the received messages as file.
 
 ## Directory Structure
 
