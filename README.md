@@ -43,9 +43,10 @@ pip install -r requirements.txt
   Run client in terminal 2  
   `python -m client.client_app`  
   Click http://127.0.0.1:5000 to run the client on localhost
-  
-* Run the project on different machines
-  * Open the following links on a different machine  
+
+
+* To experience the system in its live hosted environment on AWS:
+  * Launch both of the following URLs in your web browser:
     * https://livclient.naiva.co.za:5000/  
     * https://livserver.naiva.co.za:5001/
 
@@ -65,9 +66,9 @@ Server
 * Configure the option to determine whether to save as a file.
   * Checking 'Switch to file' indicates saving the received data as a file
   * Not checking indicates print on the screen
-* The 'Clear' Messages button is for deleting the history received data
-* The 'Download Client Received File' button is for downloading files sent by the client.
-* When in save as file mode: The 'Download All Received Messages File' button is for downloading all the received messages as file.
+* The 'Clear' Messages button is for deleting the history received data based on ACTIVE Mode (File or Print).
+* The 'Download Client Received File' button is for downloading the last message sent as file. 
+* When in save as file mode: The 'Download All Received Messages File' button is for downloading all the received messages whilst the mode was active.
 
 ## Directory Structure
     .
