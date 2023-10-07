@@ -81,7 +81,7 @@ class ServerTestCase(unittest.TestCase):
         # Check if the message is added to received_messages
         self.assertIn(f"Received data: {data}", display_message)
 
-    def test_handle_received_data_encrypted_message(self):
+    def test_encrypted_message(self):
         # Simulate receiving an encrypted message
         encrypted_data = "EncryptedMessage"
         is_encrypted = True
@@ -109,7 +109,6 @@ class ServerTestCase(unittest.TestCase):
         builtins.print = original_print
 
         # Check if the decrypted message is captured in printed_messages
-        print(display_messages)
         self.assertIn(f"Received data (Decrypted for viewing): DecryptedMessage", display_messages)
 
     def test_encrypted_text_as_file(self):
