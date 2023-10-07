@@ -44,7 +44,7 @@ def handle_received_data(data, is_encrypted, is_file, file_path, file_or_print):
     file_or_print (str): Configuration to either display data on the console or write to a file.
     """
     display_message = ""
-
+    # Received file from client
     if is_file:
         base64_decoded_data = base64.b64decode(data)
         with open(file_path, "wb") as f:
@@ -60,14 +60,14 @@ def handle_received_data(data, is_encrypted, is_file, file_path, file_or_print):
                 display_message += f"File Content: {f.read()}"
 
         display_message += f" - The Client Received File is saved at: {absolute_file_path}"
-
+    # Received data (not file) from client
     else:
         if is_encrypted:
             decrypted_data = decryption.decrypt_data(data.encode()).decode('utf-8')
             display_message = f"Received data (Decrypted for viewing): {decrypted_data}"
         else:
             display_message = f"Received data: {data}"
-
+    # Writes to either console or file depending on configuration.
     if file_or_print == "file":
         with open(all_messages_received_path, "a") as f:
             f.write(display_message + "\n")
