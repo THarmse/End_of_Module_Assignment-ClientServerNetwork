@@ -32,7 +32,7 @@ class ServerTestCase(unittest.TestCase):
         self.assertTrue('file_or_print' in data)
         self.assertTrue('file_path' in data)
 
-    # Send a GET reuest to '/download_file', and check if the response
+    # Send a GET request to '/download_file', and check if the response
     # status code is 200
     def test_download_file(self):
         response = self.app.get('/download_file')
