@@ -1,5 +1,8 @@
 import os
 
+TEXT_FILES_DIR = 'text_files'
+TEMP_FILE_NAME = 'temp_serialized_data.txt'
+
 
 def create_temp_text_file(data):
     """
@@ -15,6 +18,7 @@ def create_temp_text_file(data):
     Returns:
     str: The absolute path of the created text file in 'text_files' directory.
     """
+    os.makedirs(TEXT_FILES_DIR, exist_ok=True)
 
     # Create the 'text_files' directory if it doesn't exist
     if not os.path.exists('text_files'):
