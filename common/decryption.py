@@ -15,7 +15,7 @@ def read_key_from_file(filename):
         key = file.read()
     return key
 
-
+# Decrypt data (for server)
 def decrypt_data(data):
     """
     Decrypt data using Fernet symmetric encryption and return the decrypted data.
