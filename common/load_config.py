@@ -26,7 +26,7 @@ def load_config(config_file, caller=None):
     # Navigate up to the root directory assuming common remains as one level below root
     root_dir = os.path.dirname(current_dir)
 
-    # Determine the folder where the config file is located based on the caller ie. Client or Server
+    # Determine the folder where the config file is located based on the caller, i.e., Client or Server
     config_folder = os.path.join(root_dir, caller) if caller else root_dir
 
     # Construct the full path to the config file

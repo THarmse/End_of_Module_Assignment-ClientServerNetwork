@@ -1,6 +1,7 @@
 import os
 from cryptography.fernet import Fernet
 
+
 def read_key_from_file(filename):
     """
     Read the encryption key from a file.
@@ -15,13 +16,12 @@ def read_key_from_file(filename):
         key = file.read()
     return key
 
-# Decrypt data (for server)
+
 def decrypt_data(data):
     """
     Decrypt data using Fernet symmetric encryption and return the decrypted data.
 
     :param data: The encrypted data, as a bytes object.
-    :param key: The encryption key, as a bytes object.
     :return: The decrypted data, as a bytes object.
     """
     # Get the current directory
