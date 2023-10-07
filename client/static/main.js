@@ -64,44 +64,66 @@ function showSerializedOutput() {
  * Function to submit the data to the server.
  */
 function submitData() {
-  // Retrieve form data
-  const serializeFormat = document.getElementById("format").value;
-  const encrypt = document.getElementById("encrypt").checked;
-  const asTextFile = document.getElementById("asTextFile").checked;
+    // Retrieve form data
+    const serializeFormat = document.getElementById("format").value;
+    const encrypt = document.getElementById("encrypt").checked;
+    const asTextFile = document.getElementById("asTextFile").checked;
 
-  // Make an HTTP POST request to the server
-  fetch("/send_data", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      data: data,
-      format: serializeFormat,
-      encrypt: encrypt,
-      asTextFile: asTextFile,
-    }),
-  })
-  .then((response) => response.json()) // Parse the JSON response from the server
-  .then((data) => {
-    console.log("Success:", data); // Log the server's response for debugging
-  })
-  .catch((error) => {
-    console.error("Error:", error); // Log any errors for debugging
-  });
-  // Display the success message
-  displaySuccessMessage('Data Submitted Successfully!');
+    // Make an HTTP POST request to the server
+    fetch("/send_data", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            data: data,
+            format: serializeFormat,
+            encrypt: encrypt,
+            asTextFile: asTextFile,
+        }),
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "success") {
+                displaySuccessMessage("Data sent successfully!");
+                console.log("Success:", data); // Log the server's response for debugging
+            } else if (data.status === "error") {
+                displayErrorMessage(data.message);
+                console.log("Error:", data); // Log the server's response for debugging
+            }
+        })
+        .catch(error => {
+            // Handle other possible errors
+            displayErrorMessage("Unexpected error occurred!");
+            console.log("Exception Error:", error); // Log the error for debugging
+        });
 }
+
 /**
- * Function to how message for successful submission to server
+ * Function to show message for successful submission to server
  */
     function displaySuccessMessage(message) {
-        const successMessageElement = document.getElementById('successMessage');
+        const successMessageElement = document.getElementById('statusMessage');
         successMessageElement.textContent = message;
         successMessageElement.style.display = 'block';
+        successMessageElement.style.color = 'green';
 
         // Hide the message after 3 seconds
         setTimeout(function() {
             successMessageElement.style.display = 'none';
         }, 3000);
     }
+    /**
+     * Function to how error message (Exception handling)
+     */
+    function displayErrorMessage(message) {
+      const successMessageElement = document.getElementById('statusMessage');
+      successMessageElement.textContent = message;
+      successMessageElement.style.display = 'block';
+      successMessageElement.style.color = 'red';
+
+      setTimeout(function () {
+        successMessageElement.style.display = 'none';
+      }, 5000);
+    }
+

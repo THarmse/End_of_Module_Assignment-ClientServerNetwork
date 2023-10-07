@@ -73,16 +73,19 @@ def send_data():
     host = config['server_host']
     port = config['server_port']
 
-    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client_socket.connect((host, port))
+    try:
+        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client_socket.connect((host, port))
 
-    # Send the serialized data to the server
-    client_socket.send(to_send.encode('utf-8'))
+        # Send the serialized data to the server
+        client_socket.send(to_send.encode('utf-8'))
 
-    # Close the client socket
-    client_socket.close()
+        # Close the client socket
+        client_socket.close()
 
-    return jsonify({"status": "success", "data": serialized_data}), 200
+        return jsonify({"status": "success", "data": serialized_data}), 200
+    except socket.error as e:
+        return jsonify({"status": "error", "message": "Cannot connect to server: {}".format(e)}), 500
 
 
 # Run the Flask application
