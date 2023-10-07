@@ -53,7 +53,7 @@ function showSerializedOutput() {
     // Simulate Binary data by encoding the JSON string in base64
     const jsonString = JSON.stringify(data);
     const base64String = btoa(jsonString);
-    output = `Simulated base64-encoded pickled data: ${base64String}`;
+    output = `Simulated binary base64-encoded data: ${base64String}`;
   }
 
   // Display the serialized output
