@@ -9,9 +9,7 @@ University of Liverpool - End of Module Assignment - Client Server Network - Rep
 - [Unit test](#unit-test)
 - [License](#license)
 
-SecureFile
-https://pypi.org/project/securefile/
-type `pip install securefile` to install this package in native python  
+
 ## Installation
 
 1. Clone the repository using the following command  
