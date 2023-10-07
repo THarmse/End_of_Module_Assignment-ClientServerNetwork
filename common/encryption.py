@@ -15,7 +15,7 @@ def read_key_from_file(filename):
     with open(filename, 'rb') as file:
         key = file.read()
     return key
-
+# encrypt data (for client_app)
 def encrypt_data(data):
     """
     Encrypt data using Fernet symmetric encryption and return the encrypted data.

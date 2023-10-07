@@ -32,7 +32,7 @@ class ServerTestCase(unittest.TestCase):
         self.assertTrue('file_or_print' in data)
         self.assertTrue('file_path' in data)
 
-    # Send a GET reuest to '/download_file', and check if the response
+    # Send a GET request to '/download_file', and check if the response
     # status code is 200
     def test_download_file(self):
         response = self.app.get('/download_file')
@@ -81,7 +81,7 @@ class ServerTestCase(unittest.TestCase):
         # Check if the message is added to received_messages
         self.assertIn(f"Received data: {data}", display_message)
 
-    def test_handle_received_data_encrypted_message(self):
+    def test_encrypted_message(self):
         # Simulate receiving an encrypted message
         encrypted_data = "EncryptedMessage"
         is_encrypted = True
@@ -109,7 +109,6 @@ class ServerTestCase(unittest.TestCase):
         builtins.print = original_print
 
         # Check if the decrypted message is captured in printed_messages
-        print(display_messages)
         self.assertIn(f"Received data (Decrypted for viewing): DecryptedMessage", display_messages)
 
     def test_encrypted_text_as_file(self):
