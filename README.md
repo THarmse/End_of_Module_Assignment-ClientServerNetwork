@@ -35,12 +35,12 @@ pip install -r requirements.txt
   `cd End_of_Module_Assignment-ClientServerNetwork `  
   <br>
   Step 3  
-  Run the server in terminal 1   _(this can either be python or python3, depending on your version)_
+  Run the server in terminal 1   _(this can either be python or python3, depending on your version)_  
   `python -m server.server_main`  
   Click http://127.0.0.1:5001 to run the server on localhost  
   <br>
   Step 4  
-  Run client in terminal 2   _(this can either be python or python3, depending on your version)_
+  Run client in terminal 2   _(this can either be python or python3, depending on your version)_  
   `python -m client.client_app`  
   Click http://127.0.0.1:5000 to run the client on localhost
 
