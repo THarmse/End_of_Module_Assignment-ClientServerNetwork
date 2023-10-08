@@ -49,10 +49,11 @@ function showSerializedOutput() {
       output += "  </item>\n";
     }
     output += "</root>";
-  } else if (format === "Binary") {
+  }   else if (format === "Binary") {
     // Simulate Binary data by encoding the JSON string in base64
     const jsonString = JSON.stringify(data);
-    const base64String = btoa(jsonString);
+    const utf8ByteString = unescape(encodeURIComponent(jsonString));
+    const base64String = btoa(utf8ByteString);
     output = `Simulated binary base64-encoded data: ${base64String}`;
   }
 
