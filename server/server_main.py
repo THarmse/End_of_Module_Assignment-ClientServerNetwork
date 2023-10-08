@@ -104,6 +104,7 @@ def server_main():
         is_encrypted = parsed_data['isEncrypted']
         is_file = parsed_data['isFile']
 
+        # Creates a directory named "text_files" if it does not exit
         if not os.path.exists("text_files"):
             os.makedirs("text_files")
 
