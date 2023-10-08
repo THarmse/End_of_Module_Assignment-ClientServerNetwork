@@ -129,7 +129,7 @@ Server
   
 - `test_server.py` - contains unit test for the server.
   - These tests verify the functionality of various endpoints in the server.
-- To run all the unit tests for this project:   _(this can either be python or python3, depending on your version)_
+- To run all the unit tests for this project:   _(this can either be python or python3, depending on your version)_  
   `python -m unittest`
   
 ## License
