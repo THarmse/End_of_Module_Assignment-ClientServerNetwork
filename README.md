@@ -20,7 +20,7 @@ git clone https://github.com/THarmse/End_of_Module_Assignment-ClientServerNetwor
 ```
 cd End_of_Module_Assignment-ClientServerNetwork  
 ```  
-3. Install dependencies from requirements.txt
+3. Install dependencies from requirements.txt _(this can either be pip or pip3, depending on your version)_
 ```
 pip install -r requirements.txt
 ```   
@@ -35,12 +35,12 @@ pip install -r requirements.txt
   `cd End_of_Module_Assignment-ClientServerNetwork `  
   <br>
   Step 3  
-  Run the server in terminal 1  
+  Run the server in terminal 1   _(this can either be python or python3, depending on your version)_
   `python -m server.server_main`  
   Click http://127.0.0.1:5001 to run the server on localhost  
   <br>
   Step 4  
-  Run client in terminal 2  
+  Run client in terminal 2   _(this can either be python or python3, depending on your version)_
   `python -m client.client_app`  
   Click http://127.0.0.1:5000 to run the client on localhost
 
@@ -129,7 +129,7 @@ Server
   
 - `test_server.py` - contains unit test for the server.
   - These tests verify the functionality of various endpoints in the server.
-- To run all the unit tests for this project:  
+- To run all the unit tests for this project:   _(this can either be python or python3, depending on your version)_
   `python -m unittest`
   
 ## License
